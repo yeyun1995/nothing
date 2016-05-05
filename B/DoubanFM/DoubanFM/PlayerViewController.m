@@ -47,6 +47,60 @@
     [PlayerController sharedInstance].songInfoDelegate= self;
     timer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(updateProgress) userInfo:nil repeats:YES];
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    self.albumCoverImage.layer.cornerRadius=self.albumCoverImage.bounds.size.width/2.0;
+    self.albumCoverImage.layer.masksToBounds=YES;
+    [super viewDidAppear:animated];
+    [self initSongInformation];
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[UIApplication sharedApplication]endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
+}
+-(void)pauseButtonDidTapped:(UIButton *)sender
+{
+    if (isPlaying)
+    {
+        isPlaying=NO;
+        self.albumCoverImage.alpha=0.3f;
+        self.albumCoverMaskImage.image=[UIImage imageNamed:@""];
+        [[PlayerController sharedInstance]pauseSong];
+        [self.pausebutton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [timer setFireDate:[NSDate distantFuture]];
+        
+    }
+    else
+    {
+        isPlaying=YES;
+        self.albumCoverImage.alpha=1.0f;
+        self.albumCoverMaskImage.image=[UIImage imageNamed:@""];
+        [[PlayerController sharedInstance]restartSong];
+        [timer setFireDate:[NSDate date]];
+        [self.pausebutton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal ];
+        
+    }
+}
+-(void)skioButtonDidtapped:(UIButton *)sender
+{
+    [timer setFireDate:[NSDate distantFuture]];
+    [[PlayerController sharedInstance]pauseSong];
+    if (isPlaying ==NO)
+    {
+        self.albumCoverImage.alpha=1.0f;
+        self.albumCoverMaskImage.image=[UIImage imageNamed:@"" ] ;
+        
+    }
+    [[PlayerController sharedInstance]skipSong];
+}
+-(void)likeButtonDidtapped:(UIButton*)sender
+{
+    if (![SongInfo currentSong]) {
+        
+    }
+}
 -(void)updateProgress
 {
     int currentTimeMinutes = (unsigned)[PlayerController sharedInstance].currentPlaybackTime/60;
@@ -65,6 +119,18 @@
     NSMutableString *timeLabelString = [NSMutableString stringWithFormat:@"%@/%@",currentTimeString,totaltimeString];
     self.timerLabel.text=timeLabelString;
     self.timerProgressBar.progress=[PlayerController sharedInstance].currentPlaybackTime/[[SongInfo currentSong].length intValue];
+}
+-(void)deleteButtonTapped:(UIButton* )sender
+{
+    if (isPlaying==NO)
+    {
+        isPlaying=YES;
+        self.albumCoverImage.alpha=1.0f;
+        self.albumCoverMaskImage.image=[UIImage imageNamed:@""];
+        [[PlayerController sharedInstance]restartSong];
+        [self.pausebutton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal]; 
+    }
+    [[PlayerController sharedInstance]deleteSong];
 }
 -(void)P_addSubViews
 {
