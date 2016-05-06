@@ -10,5 +10,6 @@
 
 @interface ChannelInfo : NSObject
 @property(nonatomic,copy)NSString* ID;
+@property(nonatomic,copy)NSString *name;
 +(instancetype)currentChannel;
 @end

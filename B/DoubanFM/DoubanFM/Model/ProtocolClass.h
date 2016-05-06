@@ -11,6 +11,8 @@
 -(void)reloadTableViewData;
 -(void)initSongInformation;
 
+
+
 @end
 @interface ProtocolClass : NSObject
 

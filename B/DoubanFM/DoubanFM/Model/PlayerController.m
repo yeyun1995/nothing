@@ -7,7 +7,7 @@
 //
 
 #import "PlayerController.h"
-
+#import "SongInfo.h"
 @interface PlayerController ()
 {
     AppDelegate *appDelegate;
@@ -39,7 +39,7 @@
 }
 -(void)startPlay
 {
-   
+  
 }
 -(void)pauseSong
 {
@@ -51,19 +51,19 @@
 }
 -(void)likeSong
 {
-    [networkManager loadPlayListWithtype:@""];
+    [networkManager loadPlayListWithtype:@"r"];
 }
 -(void)dislikeSong
 {
-    [networkManager loadPlayListWithtype:@""];
+    [networkManager loadPlayListWithtype:@"u"];
     
 }
 -(void)deleteSong
 {
-    [networkManager loadPlayListWithtype:@""];
+    [networkManager loadPlayListWithtype:@"b"];
 }
 -(void)skipSong
 {
-    [networkManager loadPlayListWithtype:@""];
+    [networkManager loadPlayListWithtype:@"s"];
 }
 @end
